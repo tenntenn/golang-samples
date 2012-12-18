@@ -59,9 +59,7 @@ func (self *Server) Listen() {
 			log.Println("Send all:", msg)
 			self.messages = append(self.messages, msg)
 			for _, c := range self.clients {
-				go func(c *Client) {
-					c.Write() <- msg
-				}(c)
+				c.Write() <- msg
 			}
 		}
 	}

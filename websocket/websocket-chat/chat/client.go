@@ -46,7 +46,7 @@ func (self *Client) ListenWrite() {
 		select {
 		case msg := <-self.ch:
 			log.Println("Send:", msg)
-			websocket.JSON.Send(self.ws, msg)
+			go websocket.JSON.Send(self.ws, msg)
 		case <-self.done:
 			self.server.RemoveClient() <- self
 			return
