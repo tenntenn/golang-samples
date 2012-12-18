@@ -31,8 +31,7 @@ func (self *Server) Listen() {
 	onConnected := func(ws *websocket.Conn) {
 		client := NewClient(ws, self)
 		self.addClient <- client
-		go client.ListenWrite()
-		client.ListenRead()
+		client.Listen()
 		defer ws.Close()
 	}
 	http.Handle(self.path, websocket.Handler(onConnected))

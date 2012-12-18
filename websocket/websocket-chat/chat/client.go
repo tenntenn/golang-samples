@@ -40,7 +40,12 @@ func (self *Client) Done() chan<-bool {
 	return (chan<-bool)(self.done)
 }
 
-func (self *Client) ListenWrite() {
+func (self *Client) Listen() {
+	go self.listenWrite()
+	self.listenRead()
+}
+
+func (self *Client) listenWrite() {
 	log.Println("Listening write to client")
 	for {
 		select {
@@ -54,7 +59,7 @@ func (self *Client) ListenWrite() {
 	}
 }
 
-func (self *Client) ListenRead() {
+func (self *Client) listenRead() {
 	log.Println("Listening read from client")
 	for {
 		select {
