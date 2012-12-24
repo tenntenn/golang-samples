@@ -6,6 +6,7 @@ import (
 	"log"
 )
 
+// Chat server.
 type Server struct {
 	path string
 	clients []*Client
@@ -15,6 +16,7 @@ type Server struct {
 	messages []*Message
 }
 
+// Create new chat server.
 func NewServer(path string) *Server {
 	clients := make([]*Client, 0)
 	addClient := make(chan *Client)
@@ -24,15 +26,17 @@ func NewServer(path string) *Server {
 	return &Server{path, clients, addClient, removeClient, sendAll, messages}
 }
 
+// Listen and serve.
+// It serves client connection and broadcast request.
 func (self *Server) Listen() {
 
 	log.Println("Listening server...")
 
+	// websocket handler
 	onConnected := func(ws *websocket.Conn) {
 		client := NewClient(ws, self)
 		self.addClient <- client
-		go client.ListenWrite()
-		client.ListenRead()
+		client.Listen()
 		defer ws.Close()
 	}
 	http.Handle(self.path, websocket.Handler(onConnected))
@@ -40,6 +44,8 @@ func (self *Server) Listen() {
 
 	for {
 		select {
+
+		// Add new a client
 		case c := <-self.addClient:
 			log.Println("Added new client")
 			self.clients = append(self.clients, c)
@@ -47,6 +53,8 @@ func (self *Server) Listen() {
 				c.Write() <- msg
 			}
 			log.Println("Now", len(self.clients), "clients connected.")
+
+		// remove a client
 		case c := <-self.removeClient:
 			log.Println("Remove client")
 			for i := range self.clients {
@@ -55,13 +63,13 @@ func (self *Server) Listen() {
 					break
 				}
 			}
+
+		// broadcast message for all clients
 		case msg := <-self.sendAll:
 			log.Println("Send all:", msg)
 			self.messages = append(self.messages, msg)
 			for _, c := range self.clients {
-				go func(c *Client) {
-					c.Write() <- msg
-				}(c)
+				c.Write() <- msg
 			}
 		}
 	}
