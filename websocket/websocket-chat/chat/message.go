@@ -5,6 +5,6 @@ type Message struct {
 	Body string `json:"body"`
 }
 
-func (self Message) String() string {
+func (self *Message) String() string {
 	return self.Author + " says " + self.Body
 }

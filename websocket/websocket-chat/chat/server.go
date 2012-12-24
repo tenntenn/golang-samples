@@ -26,6 +26,24 @@ func NewServer(path string) *Server {
 	return &Server{path, clients, addClient, removeClient, sendAll, messages}
 }
 
+func (self *Server) AddClient() chan<- *Client {
+	return (chan<- *Client)(self.addClient)
+}
+
+func (self *Server) RemoveClient() chan<- *Client {
+	return (chan<- *Client)(self.removeClient)
+}
+
+func (self *Server) SendAll() chan<-*Message {
+	return (chan<-*Message)(self.sendAll)
+}
+
+func (self *Server) Messages() []*Message {
+	msgs := make([]*Message, len(self.messages))
+	copy(msgs, self.messages)
+	return msgs
+}
+
 // Listen and serve.
 // It serves client connection and broadcast request.
 func (self *Server) Listen() {
@@ -73,22 +91,4 @@ func (self *Server) Listen() {
 			}
 		}
 	}
-}
-
-func (self *Server) AddClient() chan<- *Client {
-	return (chan<- *Client)(self.addClient)
-}
-
-func (self *Server) RemoveClient() chan<- *Client {
-	return (chan<- *Client)(self.removeClient)
-}
-
-func (self *Server) SendAll() chan<-*Message {
-	return (chan<-*Message)(self.sendAll)
-}
-
-func (self *Server) Messages() []*Message {
-	msgs := make([]*Message, len(self.messages))
-	copy(msgs, self.messages)
-	return msgs
 }
