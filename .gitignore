@@ -3,3 +3,4 @@ websocket/websocket-chat/websocket-chat
 websocket/simple/simple
 exec/exec
 channel/quiz/quiz
+channel/quiz/notimeout
