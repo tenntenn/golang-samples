@@ -16,18 +16,20 @@ func countdown(n uint) {
 	fmt.Println("Start!!")
 }
 
+func input(ans chan int) {
+	for {
+		var n int
+		fmt.Scanf("%d", &n)
+		ans <- n
+	}
+}
+
 func main() {
 
 	countdown(uint(5))
 
 	ans := make(chan int)
-	go func() {
-		for {
-			var n int
-			fmt.Scanf("%d", &n)
-			ans <- n
-		}
-	}()
+	go input(ans)
 
 	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
 	count := 0
@@ -46,10 +48,9 @@ func main() {
 		case <-time.After(5 * time.Second):
 			fmt.Println()
 			fmt.Println(">> timed out")
-		}
-	}
+		}	}
 
-	fmt.Println("-----------------")
-	fmt.Println("correct:", count)
-}
+		fmt.Println("-----------------")
+		fmt.Println("correct:", count)
+	}
 
