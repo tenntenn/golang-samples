@@ -8,7 +8,7 @@ import (
 
 func countdown(n uint) {
 	for i := 0; i < int(n); i++ {
-		fmt.Print(int(n)-i)
+		fmt.Print(int(n) - i)
 		<-time.After(1 * time.Second)
 		fmt.Print(" ")
 	}
@@ -33,7 +33,7 @@ func main() {
 
 	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
 	count := 0
-	for i:= 1; i <= 10; i++ {
+	for i := 1; i <= 10; i++ {
 		n := rnd.Intn(100)
 		m := rnd.Intn(100)
 		fmt.Printf("%2d : %2d + %2d = ", i, n, m)
@@ -48,9 +48,9 @@ func main() {
 		case <-time.After(5 * time.Second):
 			fmt.Println()
 			fmt.Println(">> timed out")
-		}	}
-
-		fmt.Println("-----------------")
-		fmt.Println("correct:", count)
+		}
 	}
 
+	fmt.Println("-----------------")
+	fmt.Println("correct:", count)
+}
