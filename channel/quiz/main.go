@@ -2,6 +2,10 @@ package main
 
 import (
 	"fmt"
+	"bufio"
+	"os"
+	"strconv"
+	"strings"
 	"math/rand"
 	"time"
 )
@@ -17,9 +21,21 @@ func countdown(n uint) {
 }
 
 func input(ans chan int) {
+	r := bufio.NewReader(os.Stdin)
 	for {
-		var n int
-		fmt.Scanf("%d", &n)
+
+		line, _, err := r.ReadLine()
+		if err != nil {
+			fmt.Print(">")
+			continue
+		}
+
+		str := strings.Replace(string(line), "\r", "", -1)
+		n, err := strconv.Atoi(str)
+		if err != nil {
+			fmt.Print(">")
+			continue
+		}
 		ans <- n
 	}
 }
