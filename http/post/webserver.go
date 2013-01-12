@@ -9,7 +9,7 @@ import (
 
 type Person struct {
 	Name string
-	Jonh int
+	Age int
 	ServerResponse bool
 }
 
