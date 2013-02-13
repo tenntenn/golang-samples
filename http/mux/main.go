@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -11,13 +11,15 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	handlers := http.NewServeMux()
-	handlers.HandleFunc("/1", handler)
-	server := &http.Server{Addr:":8080", Handler: handlers}
+		handlers := http.NewServeMux()
+		handlers.HandleFunc("/1", handler)
+		server := &http.Server{Addr: ":8080", Handler: handlers}
 
-	go server.ListenAndServe()
+		go server.ListenAndServe()
 
-	handlers.HandleFunc("/2", handler)
+		handlers.HandleFunc("/2", handler)
 
-	for {}
+		select {
+		}
+
 }
