@@ -46,13 +46,13 @@ func (self *Client) Done() chan<-bool {
 	return (chan<-bool)(self.done)
 }
 
-// Listen Write and Read request via chanel
+// Listen Write and Read request via channel
 func (self *Client) Listen() {
 	go self.listenWrite()
 	self.listenRead()
 }
 
-// Listen write request via chanel
+// Listen write request via channel
 func (self *Client) listenWrite() {
 	log.Println("Listening write to client")
 	for {
@@ -72,7 +72,7 @@ func (self *Client) listenWrite() {
 	}
 }
 
-// Listen read request via chanel
+// Listen read request via channel
 func (self *Client) listenRead() {
 	log.Println("Listening read from client")
 	for {
